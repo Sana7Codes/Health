@@ -1,5 +1,5 @@
 class PhysicalActivity {
-  // Identite unoque pour chaque enregistrement de l'activité physique
+  // Identifiant unique pour chaque enregistrement de l'activité physique
   final int id;
   final String patientId;
   final DateTime? date;
@@ -18,6 +18,7 @@ class PhysicalActivity {
     this.calories,
     this.activityType,
   });
+
 // La méthode fromJson convertit un Map<String, dynamic> (issu du JSON) en objet PhysicalActivity
   factory PhysicalActivity.fromJson(Map<String, dynamic> json) {
     final pid = json['people_id'];
@@ -34,6 +35,7 @@ class PhysicalActivity {
       activityType: json['type']?.toString(),
     );
   }
+
 // La méthode _toInt gère les différentes façons dont les nombres peuvent être représentés dans le JSON (int, double, ou String) et les convertit en int de manière sécurisée
   static int? _toInt(dynamic value) {
     if (value == null) return null;

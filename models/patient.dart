@@ -1,6 +1,5 @@
-// Un modele represente ;a structure d'un objet patient tel qu'il est renvoye par l'API. 
-//Chaque chanp correspond a une cle du JSON retourne par GET/items/people
-
+// Un modele représente la structure d'un objet patient tel qu'elle est renvoyée par l'API.
+//Chaque champ correspond à une clé du JSON retourné par GET/items/people
 
 class Patient {
   // Identifiant unique du patient dans la base de données Directus
@@ -9,11 +8,12 @@ class Patient {
   // Données personnelles optionnelles car l'API peut retourner null
   final String? firstName;
   final String? lastName;
-  final String? gender;       // 'M' pour masculin, 'F' pour féminin
-  final String? birthDate;    // Date au format ISO 8601 : "1990-05-14"
-  final double? height;       // Taille en centimètres
-  final double? startWeight;  // Poids au début du suivi, en kilogrammes
-  final double? targetWeight; // Poids objectif fixé avec le professionnel de santé
+  final String? gender; // 'M' pour masculin, 'F' pour féminin
+  final String? birthDate; // Date au format ISO 8601 : "1990-05-14"
+  final double? height; // Taille en centimètres
+  final double? startWeight; // Poids au début du suivi, en kilogrammes
+  final double?
+      targetWeight; // Poids objectif fixé avec le professionnel de santé
   final String? email;
 
   // Le constructeur utilise des paramètres nommés pour plus de lisibilité
