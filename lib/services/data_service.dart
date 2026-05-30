@@ -41,7 +41,7 @@ class DataService {
           'sort': 'date',
           'limit': limit, 
         });
-   .
+   
     final List<dynamic> list = response.data['data'] ?? [];
     
     return list
