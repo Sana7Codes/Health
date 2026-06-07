@@ -1,70 +1,87 @@
-// Un modele représente la structure d'un objet patient tel qu'elle est renvoyée par l'API.
-//Chaque champ correspond à une clé du JSON retourné par GET/items/people
+// Modèle représentant un patient tel que renvoyé par l'API (GET /items/people).
+// Les noms de champs correspondent exactement aux clés du JSON de l'API Directus.
 
 class Patient {
-  // Identifiant unique du patient dans la base de données Directus
-  final int id;
+  // Identifiant unique : l'API renvoie un UUID (chaîne de caractères), pas un entier.
+  final String id;
 
-  // Données personnelles optionnelles car l'API peut retourner null
-  final String? firstName;
-  final String? lastName;
-  final String? gender; // 'M' pour masculin, 'F' pour féminin
-  final String? birthDate; // Date au format ISO 8601 : "1990-05-14"
-  final double? height; // Taille en centimètres
-  final double? startWeight; // Poids au début du suivi, en kilogrammes
-  final double?
-      targetWeight; // Poids objectif fixé avec le professionnel de santé
-  final String? email;
+  // Données personnelles (optionnelles car l'API peut renvoyer null ou une chaîne vide).
+  final String? firstName; // clé JSON : "firstname"
+  final String? lastName; // clé JSON : "lastname"
+  final int? sex; // clé JSON : "sex" — entier (ex : 1)
+  final int? birthYear; // clé JSON : "birthyear" — année de naissance
+  final double? height; // taille en centimètres
+  final double? startWeight; // clé JSON : "weightStart"
+  final double? targetWeight; // clé JSON : "weightGoal"
+  final String? activityProfile; // clé JSON : "activityProfile" (ex : "sedentary")
+  final String? bmiStart; // clé JSON : "bmiStart"
+  final String? bmiGoal; // clé JSON : "bmiGoal"
 
-  // Le constructeur utilise des paramètres nommés pour plus de lisibilité
-  // "required" signifie que le champ est obligatoire à l'instanciation
   Patient({
     required this.id,
     this.firstName,
     this.lastName,
-    this.gender,
-    this.birthDate,
+    this.sex,
+    this.birthYear,
     this.height,
     this.startWeight,
     this.targetWeight,
-    this.email,
+    this.activityProfile,
+    this.bmiStart,
+    this.bmiGoal,
   });
 
-  // factory fromJson : méthode de désérialisation
-  // Elle convertit un Map<String, dynamic> (issu du JSON) en objet Patient
-  // On utilise l'opérateur "as num?" pour gérer le fait que l'API
-  // peut retourner un entier ou un double selon le champ
+  // Désérialisation : convertit le Map<String, dynamic> issu du JSON en objet Patient.
   factory Patient.fromJson(Map<String, dynamic> json) {
     return Patient(
-      id: json['id'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      gender: json['gender'],
-      birthDate: json['birth_date'],
-      // toDouble() convertit num en double pour uniformiser le type
+      // L'id est un UUID : on le force en String pour rester robuste.
+      id: json['id'].toString(),
+      firstName: json['firstname'] as String?,
+      lastName: json['lastname'] as String?,
+      sex: _toInt(json['sex']),
+      birthYear: _toInt(json['birthyear']),
+      // toDouble() uniformise le type (l'API peut renvoyer int ou double).
       height: (json['height'] as num?)?.toDouble(),
-      startWeight: (json['start_weight'] as num?)?.toDouble(),
-      targetWeight: (json['target_weight'] as num?)?.toDouble(),
-      email: json['email'],
+      startWeight: (json['weightStart'] as num?)?.toDouble(),
+      targetWeight: (json['weightGoal'] as num?)?.toDouble(),
+      activityProfile: json['activityProfile'] as String?,
+      bmiStart: json['bmiStart'] as String?,
+      bmiGoal: json['bmiGoal'] as String?,
     );
   }
 
-  // Getter calculé : évite de répéter la concaténation partout dans le code
-  // Le .trim() supprime les espaces en cas de prénom ou nom manquant
-  String get fullName => '${firstName ?? ''} ${lastName ?? ''}'.trim();
+  // Conversion sécurisée vers int (gère null, int, double, String).
+  static int? _toInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value.toString());
+  }
 
-  // Calcul de l'âge à partir de la date de naissance
-  // On compare l'année courante avec l'année de naissance,
-  // puis on soustrait 1 si l'anniversaire n'est pas encore passé cette année
-  int get age {
-    if (birthDate == null) return 0;
-    final birth = DateTime.parse(birthDate!);
-    final now = DateTime.now();
-    int age = now.year - birth.year;
-    if (now.month < birth.month ||
-        (now.month == birth.month && now.day < birth.day)) {
-      age--; // L'anniversaire n'est pas encore passé
+  // Nom complet : évite de répéter la concaténation partout dans le code.
+  // .trim() supprime les espaces si le prénom ou le nom est manquant.
+  String get fullName {
+    final name = '${firstName ?? ''} ${lastName ?? ''}'.trim();
+    // L'API renvoie souvent des noms vides : on affiche alors l'id abrégé.
+    return name.isNotEmpty ? name : 'Patient ${id.substring(0, 8)}';
+  }
+
+  // Libellé lisible du sexe (l'API renvoie un entier).
+  String get genderLabel {
+    switch (sex) {
+      case 1:
+        return 'Homme';
+      case 2:
+        return 'Femme';
+      default:
+        return 'Non précisé';
     }
-    return age;
+  }
+
+  // Âge calculé à partir de l'année de naissance.
+  // Retourne null si l'année est absente (l'écran peut alors afficher "Âge inconnu").
+  int? get age {
+    if (birthYear == null || birthYear == 0) return null;
+    return DateTime.now().year - birthYear!;
   }
 }

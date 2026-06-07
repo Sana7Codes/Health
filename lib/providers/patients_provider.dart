@@ -3,15 +3,17 @@ import 'package:flutter/foundation.dart';
 import '../models/patient.dart';
 import '../services/patient_service.dart';
 
+
+/// Provider dédié à la gestion de la liste des patients et de leurs détails.
 class PatientsProvider extends ChangeNotifier {
   final PatientService _service = PatientService();
-
+// Cache local de la liste des patients et de leur état de chargement.
   List<Patient> _patients = [];
   bool _isLoading = false;
   String? _error;
   String _searchQuery = '';
   bool _hasLoaded = false;
-
+// Getters publics pour accéder aux données et à l'état.
   List<Patient> get patients => _patients;
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -28,7 +30,7 @@ class PatientsProvider extends ChangeNotifier {
             (p.lastName?.toLowerCase().contains(q) ?? false))
         .toList();
   }
-
+/// Met à jour la requête de recherche et notifie les écouteurs pour rafraîchir l'affichage.
   void setSearchQuery(String query) {
     _searchQuery = query;
     notifyListeners();
@@ -42,7 +44,7 @@ class PatientsProvider extends ChangeNotifier {
     _isLoading = true;
     _error = null;
     notifyListeners();
-
+// Appel du service pour récupérer les patients, avec gestion des erreurs.
     try {
       _patients = await _service.fetchAll();
       _hasLoaded = true;
@@ -53,7 +55,7 @@ class PatientsProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
+/// Recherche un patient par son ID dans le cache local. Retourne null si non trouvé.
   Patient? findById(String id) {
     try {
       return _patients.firstWhere((p) => p.id == id);
@@ -61,7 +63,7 @@ class PatientsProvider extends ChangeNotifier {
       return null;
     }
   }
-
+/// Assure que les détails d'un patient sont chargés. Si déjà en cache, retourne immédiatement.
   Future<Patient?> ensurePatient(String id) async {
     final existing = findById(id);
     if (existing != null) return existing;

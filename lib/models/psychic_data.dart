@@ -1,48 +1,36 @@
+/// Donnée psychique telle que renvoyée par l'API (endpoint privé /items/psychicData).
+///
+/// Structure réelle d'un enregistrement :
+///   {"id":1562, "people_id":"<uuid>", "feeling":"addicted", "date":"2023-12-15"}
+///
+/// `feeling` est une CATÉGORIE textuelle (ex : "addicted", "enduring", "happy"…),
+/// et non un score numérique. On ne peut donc pas en faire une moyenne :
+/// la visualisation adaptée est une répartition (comptage par catégorie).
 class PsychicData {
   final int id;
   final String patientId;
+  final String? feeling;
   final DateTime? date;
-  final int? moodScore;
-  final int? stressLevel;
-  final double? sleepHours;
-  final String? notes;
 
   PsychicData({
     required this.id,
     required this.patientId,
+    this.feeling,
     this.date,
-    this.moodScore,
-    this.stressLevel,
-    this.sleepHours,
-    this.notes,
   });
 
   factory PsychicData.fromJson(Map<String, dynamic> json) {
+    // people_id peut arriver sous forme de chaîne (uuid) ou d'objet imbriqué.
     final pid = json['people_id'];
     final pidStr = pid is Map ? pid['id'].toString() : pid.toString();
+
     final rawDate = json['date'] ?? json['date_created'];
+
     return PsychicData(
       id: json['id'] is int ? json['id'] : int.parse(json['id'].toString()),
       patientId: pidStr,
+      feeling: json['feeling']?.toString(),
       date: rawDate != null ? DateTime.tryParse(rawDate.toString()) : null,
-      moodScore: _toInt(json['mood_score']),
-      stressLevel: _toInt(json['stress_level']),
-      sleepHours: _toDouble(json['sleep_hours']),
-      notes: json['notes']?.toString(),
     );
-  }
-
-  static int? _toInt(dynamic value) {
-    if (value == null) return null;
-    if (value is int) return value;
-    if (value is double) return value.toInt();
-    return int.tryParse(value.toString());
-  }
-
-  static double? _toDouble(dynamic value) {
-    if (value == null) return null;
-    if (value is double) return value;
-    if (value is int) return value.toDouble();
-    return double.tryParse(value.toString());
   }
 }

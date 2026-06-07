@@ -180,8 +180,10 @@ class _PatientCard extends StatelessWidget {
   }
 
   static String _initial(Patient p) {
-    if (p.firstName.isNotEmpty) return p.firstName[0].toUpperCase();
-    if (p.lastName.isNotEmpty) return p.lastName[0].toUpperCase();
+    final f = p.firstName ?? '';
+    final l = p.lastName ?? '';
+    if (f.isNotEmpty) return f[0].toUpperCase();
+    if (l.isNotEmpty) return l[0].toUpperCase();
     return '?';
   }
 }
