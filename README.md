@@ -1,12 +1,11 @@
-# Projet Health — Application mobile de suivi e-santé
+# Projet Health Application mobile de suivi e-santé
 
-Application mobile cross-platform développée en **Flutter / Dart**, connectée à une API REST (CMS Directus, `https://health.shrp.dev`), dans le cadre du module *Interfaces utilisateurs et composants* — M1 Sciences Cognitives, IDMC.
-
+Application mobile cross-platform développée en **Flutter / Dart**, connectée à une API REST (CMS Directus, `https://health.shrp.dev`).
 L'application s'adresse à un **professionnel de santé** (médecin, nutritionniste, coach sportif…) : elle permet de consulter la liste de tous les patients et de suivre leur évolution physique, physiologique et psychique.
 
 ---
 
-## 👥 Membres du groupe
+## Membres du groupe
 
 - Sana Haidar
 - Rouba Rizkallah
