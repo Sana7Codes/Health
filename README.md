@@ -15,7 +15,7 @@ L'application s'adresse à un **professionnel de santé** (médecin, nutritionni
 
 ---
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
 ### Fonctionnalités principales
 -  **Liste des patients** (écran Master) avec recherche en temps réel.
@@ -34,7 +34,7 @@ L'application s'adresse à un **professionnel de santé** (médecin, nutritionni
 
 ---
 
-## 🛠️ Stack technique
+##  Stack technique
 
 | Domaine | Technologie |
 |---|---|
@@ -48,7 +48,7 @@ L'application s'adresse à un **professionnel de santé** (médecin, nutritionni
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 lib/
@@ -82,7 +82,7 @@ lib/
 
 ---
 
-## 📱 Aperçu de l'application
+##  Aperçu de l'application
 
 | Liste des patients (Master) | Détails d'un patient | Évolution du poids |
 |:---:|:---:|:---:|
@@ -106,7 +106,7 @@ lib/
 
 ---
 
-## 🔌 Documentation de l'API
+##  Documentation de l'API
 
 L'API REST (Directus) expose des endpoints **publics** et **privés**.
 
@@ -166,7 +166,7 @@ filtrage relationnel et accès à l'endpoint privé.
 
 ---
 
-## 🚀 Installation et lancement
+## Installation et lancement
 
 ### Prérequis
 - Flutter SDK installé ([guide officiel](https://docs.flutter.dev/get-started/install))
@@ -189,7 +189,7 @@ L'application démarre directement sur la liste des patients. La connexion (prof
 
 ---
 
-## 📝 Note sur l'accès aux données (RGPD)
+## Note sur l'accès aux données (RGPD)
 
 Dans un contexte professionnel réel, les endpoints exposant des données de santé
 (`/items/people`, `/items/physiologicalData`, `/items/physicalActivities`) devraient être privés pour respecter le RGPD. Dans le cadre de ce projet, ils ont été rendus
@@ -197,7 +197,7 @@ publics pour faciliter l'accès aux données. Seul l'endpoint des données psych
 
 ---
 
-## 🤖 Utilisation d'outils d'IA
+##  Utilisation d'outils d'IA
 
 Conformément aux consignes, l'utilisation d'outils d'IA générative est signalée :
 ces outils ont été employés à des fins de **documentation, de vérification et de
